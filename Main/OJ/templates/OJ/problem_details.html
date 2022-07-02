@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problem Details</title>
+</head>
+
+<body>
+    <h2>{{problem.problem_name}}</h2>
+    <p>{{problem.problem_statement}}</p>
+    <p>Difficulty Level : {{problem.problem_level}}</p>
+    <form enctype="multipart/form-data" action="{ url 'oj:submission' submission }" method="post">
+        {% csrf_token %}
+        <label for="code">Upload your code file : </label>
+        <input type="file" name="code">
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+
+</html>

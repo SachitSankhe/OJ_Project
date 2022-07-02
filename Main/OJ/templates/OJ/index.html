@@ -23,7 +23,9 @@
         <ol type="1">
             {% for problems in Problem_List %}
             <li>
-                <p> {{problems.problem_name}} {{problems.problem_level}}</p>
+            <a href="{% url  'oj:details' problems.problem_id %}">
+                {{problems.problem_name}} {{problems.problem_level}}
+            </a>
             </li>
             <br>
             {% endfor %}
