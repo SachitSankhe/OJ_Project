@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problem Details</title>
+<style>
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+</head>
+
+<body>
+    <div class="container">
+    <h2>{{problem.problem_name}}</h2>
+    <p>{{problem.problem_statement}}</p>
+    <p>Difficulty Level : {{problem.problem_level}}</p>
+    <hr>
+    <hr>
+    
+    <form method="post" enctype="multipart/form-data" action="{% url 'oj:submission' problem.problem_id %}"
+        class="container">
+        {% csrf_token %}
+            {{ form.as_p }}
+            <span>
+                <label for="problem_code">Upload your code file : </label>
+                <input type="file" name="problem_code" id="problem_code">
+            </span>
+            
+            <br>
+            <button type="submit">Submit</button>
+    </form>
+    </div>
+</body>
+
+</html>
