@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Problem Name</th>
+                    <th>Verdict</th>
+                    <th>Submitted At</th>
+                </tr>
+            </thead>
+            {% for solution in sol %}
+            <tbody>
+                <tr>
+                    <td>{{solution.problem_id.problem_name}}</td>
+                    <td>{{solution.Verdict}}</td>
+                    <td>{{solution.submitted_at}}</td>
+                </tr>
+            </tbody>
+            {% endfor %}
+        </table>
+    </div>
+
+</body>
+
+</html>

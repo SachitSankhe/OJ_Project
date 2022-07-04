@@ -1,10 +1,10 @@
 from dataclasses import field
 from django import forms
 from django.forms import ModelForm
-from .models import Problems
+from .models import Solution
 
 
 class FileSubmission(ModelForm):
     class Meta:
-        model = Problems
-        fields = "__all__"
+        model = Solution
+        fields = ["problem_code","submitted_at"]

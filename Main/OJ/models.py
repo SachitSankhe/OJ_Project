@@ -14,13 +14,15 @@ class User(models.Model):
         return self.fname
 
 
-class Problems(models.Model):
+def content_file_name(instance, filename):
+    return '/codeFiles/'.join([instance.problem.problem_id, filename])
+
+class Problem(models.Model):
     problem_id = models.BigAutoField(
         primary_key=True, db_column="Problem ID")
     problem_name = models.CharField(max_length=50, db_column="Problem Name")
     problem_statement = models.CharField(
         max_length=400, db_column="Problem Statement")
-    problem_code = models.FileField(upload_to= 'Main\OJ\codeFiles',default=True ,validators=[FileExtensionValidator(allowed_extensions=['cpp'])])
     problem_status = models.BooleanField(
         db_column="Solve_status", default=False)
     problem_level = models.CharField(max_length=10, db_column="Problem level")
@@ -35,8 +37,8 @@ class Problems(models.Model):
 
 
 
-class TestCases(models.Model):
-    problem_id = models.ForeignKey(Problems, on_delete=models.CASCADE)
+class TestCase(models.Model):
+    problem_id = models.ForeignKey(Problem, on_delete=models.CASCADE)
     input = models.FileField('Input', max_length=200)
     output = models.CharField('Output', max_length=200)
 
@@ -44,10 +46,11 @@ class TestCases(models.Model):
         return self.input
 
 
-class Solutions(models.Model):
-    problem_id = models.ForeignKey(Problems, on_delete=models.CASCADE)
+class Solution(models.Model):
+    problem_id = models.ForeignKey(Problem, on_delete=models.CASCADE)
+    problem_code = models.FileField(upload_to= content_file_name,default=True ,validators=[FileExtensionValidator(allowed_extensions=['cpp'])])
     submitted_at = models.DateTimeField('Submitted on')
-    Verdict = models.CharField('Verdict', max_length=20)
+    Verdict = models.CharField('Verdict', max_length=20,blank=True)
 
     def __str__(self):
         return self.Verdict
