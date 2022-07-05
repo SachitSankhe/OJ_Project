@@ -48,7 +48,7 @@ class TestCase(models.Model):
 
 class Solution(models.Model):
     problem_id = models.ForeignKey(Problem, on_delete=models.CASCADE)
-    problem_code = models.FileField(upload_to= content_file_name,default=True ,validators=[FileExtensionValidator(allowed_extensions=['cpp'])])
+    problem_code = models.FileField(upload_to= "media",default=True ,validators=[FileExtensionValidator(allowed_extensions=['cpp'])])
     submitted_at = models.DateTimeField('Submitted on')
     Verdict = models.CharField('Verdict', max_length=20,blank=True)
 
