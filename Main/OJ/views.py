@@ -1,18 +1,12 @@
-from asyncore import read
-from multiprocessing.connection import wait
-from re import T
+from django.contrib import messages
 import subprocess
-import filecmp
-from multiprocessing import context
-import os
 from django.urls import reverse
 from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import  HttpResponseRedirect
 
 from .models import Problem
 from .models import Solution
 
-from .forms import FileSubmission
 from django.utils import timezone
 #Create your views here.
 
@@ -30,43 +24,56 @@ def details(request,problem_id):
 
 def submission(request,problem_id):
     if request.method == 'POST':
-        form_1 = FileSubmission(request.POST,request.FILES)
-        if form_1.is_valid:
-            file = request.FILES.get('problem_code')
-            with open(f'OJ/codeFiles/sample.cpp', 'wb+') as destination:  
-                for chunk in file.chunks():  
-                    destination.write(chunk)  
+        file = request.FILES.get('problem_code')
+        if file!=None:
+            filename = file.name
+            if filename.endswith('.cpp'):
+                with open(f'OJ/codeFiles/sample.cpp', 'wb+') as destination:  
+                    for chunk in file.chunks():  
+                        destination.write(chunk)  
 
-            compile_com = "g++ OJ\codeFiles\sample.cpp -o OJ\codeFiles\output.exe"
-            run_com = "OJ\codeFiles\output.exe"
-            subprocess.Popen(compile_com,shell=True)
-            with open('OJ\codeFiles\output.txt','w+') as f:
-                with open("OJ\codeFiles\input.txt","r") as i:
-                   subprocess.Popen(run_com,shell=True,stdin=i,stdout=f).wait()
-            
-            out1 = 'OJ\codeFiles\output.txt'
-            out2 = 'OJ\codeFiles\sample_output.txt'
+                compile_com = "g++ OJ\codeFiles\sample.cpp -o OJ\codeFiles\output.exe"
+                run_com = "OJ\codeFiles\output.exe"
+                try:
+                    subprocess.run(compile_com,shell=True,check=True,timeout=5)
+                    try:
+                        output = ""
+                        with open("OJ\codeFiles\input.txt","r") as i:
+                            output = subprocess.run(run_com,shell=True,stdin=i,capture_output=True,check=True,timeout=2,text=True)
+                    
 
-            with open(out1) as f:
-                lines1 = f.readlines()
-            with open(out2) as f:
-                lines2 = f.readlines()
+                        out = 'OJ\codeFiles\sample_output.txt'
+                        with open(out) as f:
+                            sample_out = f.read()
 
-            if(lines1==lines2):
-                verdict = 'AC'
+                        if(output.stdout==sample_out):
+                            verdict = 'AC'
+                        else:
+                            verdict='WA'
+                        output.exe
+                    except subprocess.TimeoutExpired:
+                        verdict = "Timeout (TLE)"
+                    
+
+                except subprocess.CalledProcessError as e:
+                    if e.returncode!=0:
+                        verdict = "Compilation Error"
+                finally:
+                    sol = Solution()
+                    sol.problem_id = Problem.objects.get(pk=problem_id)
+                    sol.problem_code = 'OJ\codeFiles\sample.cpp'
+                    sol.submitted_at = timezone.now()
+                    sol.Verdict = verdict
+                    sol.save()
+                    messages.success(request,"File Uploaded Succesfully")
+                    return HttpResponseRedirect(reverse('oj:leaderboard'))
             else:
-                verdict='WA'
-                
-            sol = Solution()
-            sol.problem_id = Problem.objects.get(pk=problem_id)
-            sol.problem_code = 'OJ\codeFiles\sample.cpp'
-            sol.submitted_at = timezone.now()
-            sol.Verdict = verdict
-            sol.save()
-            return HttpResponseRedirect(reverse('oj:leaderboard'))
+                messages.warning(request,"Wrong File Uploaded")
+                return HttpResponseRedirect(f'/OJ/problems/{problem_id}/')
+            
         else:
-            form_2 = FileSubmission()
-            return HttpResponseRedirect('OJ/problem_details.html')
+            messages.error(request,"File not added")
+            return HttpResponseRedirect(f'/OJ/problems/{problem_id}/')
 
 def leaderboard(request):
     context = {

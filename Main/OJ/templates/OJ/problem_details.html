@@ -13,10 +13,36 @@
         align-items: center;
         justify-content: center;
     }
+    .mess {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .success{
+        color: green;
+    }
+    .Warning{
+        color: black;
+    }
+    .error{
+        color: red;
+    }
 </style>
 </head>
 
 <body>
+<div class="mess">
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li class="{{message.tags}}">
+            <h2><span style="text-transform: uppercase;">{{message.tags}}</span> : {{message}}</h2>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
     <div class="container">
     <h2>{{problem.problem_name}}</h2>
     <p>{{problem.problem_statement}}</p>

@@ -21,10 +21,26 @@
             border-collapse: collapse;
             padding: 20px;
         }
+
+        .success{
+        color: green;
+        }
     </style>
 </head>
 
 <body>
+<div class="mess">
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li class="{{message.tags}}">
+            <h2><span style="text-transform: uppercase;">{{message.tags}}</span> : {{message}}</h2>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+
     <div class="container">
         <table>
             <thead>
