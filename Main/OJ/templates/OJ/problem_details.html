@@ -7,7 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Problem Details</title>
 <style>
+    body{
+        background-color: black;
+    }
     .container {
+        color: aliceblue;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -19,11 +23,8 @@
         align-items: center;
         justify-content: center;
     }
-    .success{
-        color: green;
-    }
-    .Warning{
-        color: black;
+    .warning{
+        color: yellow;
     }
     .error{
         color: red;
@@ -36,7 +37,7 @@
     {% if messages %}
     <ul>
         {% for message in messages %}
-        <li class="{{message.tags}}">
+        <li class="{{message.tags}}" type="none">
             <h2><span style="text-transform: uppercase;">{{message.tags}}</span> : {{message}}</h2>
         </li>
         {% endfor %}
@@ -47,9 +48,8 @@
     <h2>{{problem.problem_name}}</h2>
     <p>{{problem.problem_statement}}</p>
     <p>Difficulty Level : {{problem.problem_level}}</p>
-    <hr>
-    <hr>
-    
+
+        <br>
     <form method="post" enctype="multipart/form-data" action="{% url 'oj:submission' problem.problem_id %}"
         class="container">
         {% csrf_token %}
@@ -58,7 +58,6 @@
                 <label for="problem_code">Upload your code file : </label>
                 <input type="file" name="problem_code" id="problem_code">
             </span>
-            
             <br>
             <button type="submit">Submit</button>
     </form>

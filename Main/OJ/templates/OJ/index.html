@@ -11,16 +11,39 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
     <title>Hello, world!</title>
+    <style>
+        body {
+            background-color: black;
+        }
+    
+        .list {
+            color: aquamarine;
+    
+        }
+    
+        .list li a:link {
+            text-decoration: none;
+            color: aquamarine;
+        }
+    
+        .list li a:visited {
+            color: rgb(64, 121, 102);
+        }
+    
+        .list li a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 
 <body>
     <div class="listofproblem" style="display: flex;flex-direction: column; align-items: center;font-size: x-large">
-        <h1>
+        <h1 style="color: aliceblue;">
             <u>Problem List!</u>
         </h1>
         <br>
         {% if Problem_List %}
-        <ol type="1">
+        <ol type="1" class="list">
             {% for problems in Problem_List %}
             <li>
             <a href="{% url  'oj:details' problems.problem_id %}">

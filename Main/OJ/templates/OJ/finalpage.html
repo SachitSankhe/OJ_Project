@@ -7,7 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
+        body{
+            background-color: black;
+        }
         .container {
+            color: aliceblue;
             width: 100%;
             display: flex;
             align-items: center;
@@ -17,13 +21,14 @@
         table,
         th,
         td {
-            border: 1px solid black;
+            border: 1px solid gainsboro;
             border-collapse: collapse;
             padding: 20px;
         }
 
         .success{
-        color: green;
+            color: #7CFC00;
+            text-align: center;
         }
     </style>
 </head>
@@ -33,13 +38,17 @@
     {% if messages %}
     <ul>
         {% for message in messages %}
-        <li class="{{message.tags}}">
+        <li class="{{message.tags}}" type="none">
             <h2><span style="text-transform: uppercase;">{{message.tags}}</span> : {{message}}</h2>
         </li>
         {% endfor %}
     </ul>
     {% endif %}
 </div>
+
+    <h2 style="text-align: center;color:aliceblue;">
+        <u>LeaderBoard</u>
+    </h2>
 
     <div class="container">
         <table>

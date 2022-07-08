@@ -37,20 +37,18 @@ def submission(request,problem_id):
                 try:
                     subprocess.run(compile_com,shell=True,check=True,timeout=5)
                     try:
-                        output = ""
                         with open("OJ\codeFiles\input.txt","r") as i:
-                            output = subprocess.run(run_com,shell=True,stdin=i,capture_output=True,check=True,timeout=2,text=True)
+                            op = subprocess.run(run_com,stdin=i,capture_output=True,check=True,timeout=1,text=True)
                     
-
                         out = 'OJ\codeFiles\sample_output.txt'
                         with open(out) as f:
                             sample_out = f.read()
 
-                        if(output.stdout==sample_out):
+                        if(op.stdout==sample_out):
                             verdict = 'AC'
                         else:
                             verdict='WA'
-                        output.exe
+                        
                     except subprocess.TimeoutExpired:
                         verdict = "Timeout (TLE)"
                     
