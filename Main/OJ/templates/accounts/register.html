@@ -1,0 +1,101 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <style>
+        .error {
+            color: red;
+        }
+
+        .container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .text-center a {
+            text-decoration: none;
+            color: aqua;
+            text-decoration: underline;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container-fluid bg-dark">
+        <h2 style="text-align: center;color: aquamarine; padding: 20px;">
+            <u>Registration Form</u>
+        </h2>
+        <div class="mess" style="text-align: center;">
+            {% if messages %}
+            <ul>
+                {% for message in messages %}
+                <li class="{{message.tags}}" type="none">
+                    {% if message.tags != "success" %}
+                    <h4><span style="text-transform: uppercase;">{{message.tags}}</span> : {{message}}</h4>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        <div class="container">
+            <form method="POST" action="{% url 'accounts:register' %}">
+                {% csrf_token %}
+                <div class="form-floating-md mb-3 col-10">
+                    <input type="text" name="first_name" class="form-control" id="floatingfirstInput"
+                        placeholder="First Name">
+                </div>
+                <div class="form-floating-md mb-3 col-10">
+                    <input type="text" name="last_name" class="form-control" id="floatinglastInput"
+                        placeholder="Last Name">
+                </div>
+                <div class="form-floating-md mb-3 col-10">
+                    <input type="text" name="username" class="form-control" id="floatinguserInput"
+                        placeholder="User Name">
+                </div>
+                <div class="form-floating-md mb-3 col-10">
+                    <input type="email" name="email" class="form-control" id="floatingemailInput"
+                        placeholder="name@example.com">
+                </div>
+                <div class="form-floating-md mb-3 col-10">
+                    <input type="password" name="password1" class="form-control" id="floatingPassword1"
+                        placeholder="Password">
+                </div>
+                <div class="help_text" style="color: aliceblue;max-width: 80%;font-size: small;">
+                    {{help_text}}
+                </div>
+                <div class="form-floating-md mb-3 col-10">
+                    <input type="password" name="password2" class="form-control" id="floatingPassword2"
+                        placeholder="Confirm Password">
+                </div>
+                <input type="submit" class="btn btn-dark btn-outline-success">
+            </form>
+            <div class="text-center" style="color: aliceblue; text-transform: uppercase;">
+                <p>Already Registered? <a href="{% url 'accounts:login' %}">Login now</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js"
+        integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

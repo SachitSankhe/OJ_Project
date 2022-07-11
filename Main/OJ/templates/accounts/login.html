@@ -1,0 +1,30 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+
+<body>
+    <div class="mess">
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li class="{{message.tags}}" type="none">
+                <h2><span style="text-transform: uppercase;">{{message.tags}}</span> : {{message}}</h2>
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+    <form action="{% url 'accounts:login' %}" method="POST">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="UserName"><br>
+        <input type="password" name="password" placeholder="Password"><br>
+        <input type="submit" placeholder="Login">
+    </form>
+</body>
+
+</html>

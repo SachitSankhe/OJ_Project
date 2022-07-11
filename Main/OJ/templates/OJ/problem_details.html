@@ -44,6 +44,14 @@
     </ul>
     {% endif %}
 </div>
+<div class="user_info">
+    {% if user.is_authenticated %}
+    <ul>
+        <li>Hello, {{user.first_name}}!</li>
+        <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
+    </ul>
+    {% endif %}
+</div>
     <div class="container">
     <h2>{{problem.problem_name}}</h2>
     <p>{{problem.problem_statement}}</p>

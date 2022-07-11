@@ -3,15 +3,16 @@ import datetime
 from django.db import models
 from django.utils import timezone
 from django.core.validators import FileExtensionValidator
+from django.contrib.auth.models import User
 # Create your models here.
 
 
-class User(models.Model):
-    fname = models.CharField('First Name', max_length=30)
-    sname = models.CharField('First Name', max_length=30)
-    # User_totalscore = models.FloatField()
-    def __str__(self):
-        return self.fname
+# class User(models.Model):
+#     fname = models.CharField('First Name', max_length=30)
+#     sname = models.CharField('First Name', max_length=30)
+#     # User_totalscore = models.FloatField()
+#     def __str__(self):
+#         return self.fname
 
 
 def content_file_name(instance, filename):
@@ -39,7 +40,7 @@ class Problem(models.Model):
 
 class TestCase(models.Model):
     problem_id = models.ForeignKey(Problem, on_delete=models.CASCADE)
-    input = models.FileField('Input', max_length=200)
+    input = models.CharField('Input', max_length=200)
     output = models.CharField('Output', max_length=200)
 
     def __str__(self):
@@ -47,8 +48,9 @@ class TestCase(models.Model):
 
 
 class Solution(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
     problem_id = models.ForeignKey(Problem, on_delete=models.CASCADE)
-    problem_code = models.FileField(upload_to= "media",default=True ,validators=[FileExtensionValidator(allowed_extensions=['cpp'])])
+    problem_code = models.CharField(max_length=5000)
     submitted_at = models.DateTimeField('Submitted on')
     Verdict = models.CharField('Verdict', max_length=20,blank=True)
 
