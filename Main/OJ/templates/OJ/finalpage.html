@@ -5,30 +5,94 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Submissions</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <style>
+        body{
+            background-color: #262626;
+        }
         .container {
+            color: aliceblue;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: larger;
+        }
+
+        .container_t {
+            color: aliceblue;
             width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
         }
+        .links_tag{
+            color: cyan !important;
+            font-size: x-large !important;
+        }
 
         table,
         th,
         td {
-            border: 1px solid black;
+            border: 1px solid gainsboro;
             border-collapse: collapse;
             padding: 20px;
+        }
+
+        .success{
+            color: #7CFC00;
+            text-align: center;
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
+    <div class="user_info">
+        <nav class="navbar navbar-light navbar-expand-md bg-dark justify-content-center">
+            <div class="container">
+                <a href="#" class="navbar-brand d-flex w-50 me-auto links_tag">Hi, {{user.first_name}}</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsingNavbar3">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse w-100" id="collapsingNavbar3">
+                    <ul class="navbar-nav w-100 justify-content-center">
+                        <li class="nav-item active">
+                            <a class="nav-link links_tag" href="{% url 'oj:index' %}">Problems</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link links_tag" href="{% url 'oj:leaderboard' %}">Submissions</a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav ms-auto w-100 justify-content-end">
+                        <li class="nav-item">
+                            <a class="nav-link links_tag" href="{% url 'accounts:logout' %}">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="mess">
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li class="{{message.tags}}" type="none">
+                <h3 style="padding-top: 5px;"><span style="text-transform: uppercase;">{{message.tags}}</span> : {{message}}</h3>
+                </li>
+                {% endfor %}
+                </ul>
+                {% endif %}
+                </div>
+    <h2 style="text-align: center;color:aliceblue;padding: 8px;">
+        <u>Submissions</u>
+    </h2>
+    <div class="container_t">
         <table>
             <thead>
                 <tr>
+                    <th>UserName</th>
                     <th>Problem Name</th>
                     <th>Verdict</th>
                     <th>Submitted At</th>
@@ -36,16 +100,45 @@
             </thead>
             {% for solution in sol %}
             <tbody>
-                <tr>
+                {% if solution.Verdict == "AC" %}
+                <tr style="color: #0DE91A;">
+                    <td>{{solution.user.username}}</td>
                     <td>{{solution.problem_id.problem_name}}</td>
                     <td>{{solution.Verdict}}</td>
                     <td>{{solution.submitted_at}}</td>
                 </tr>
+                {% elif solution.Verdict == "WA" %}
+                <tr style="color: red;">
+                    <td>{{solution.user.username}}</td>
+                    <td>{{solution.problem_id.problem_name}}</td>
+                    <td>{{solution.Verdict}}</td>
+                    <td>{{solution.submitted_at}}</td>
+                </tr>
+                {% elif solution.Verdict == "TLE" %}
+                <tr style="color: aqua;">
+                    <td>{{solution.user.username}}</td>
+                    <td>{{solution.problem_id.problem_name}}</td>
+                    <td>{{solution.Verdict}}</td>
+                    <td>{{solution.submitted_at}}</td>
+                </tr>
+                {% endif %}
             </tbody>
             {% endfor %}
         </table>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
