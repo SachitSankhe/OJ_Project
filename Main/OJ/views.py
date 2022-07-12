@@ -33,6 +33,7 @@ def submission(request, problem_id):
             if filename.endswith('.cpp'):
                 with open(f'OJ/codeFiles/sample.cpp', 'wb+') as destination:
                     for chunk in file.chunks():
+                        user_code = chunk
                         destination.write(chunk)
 
                 compile_com = "g++ OJ\codeFiles\sample.cpp -o OJ\codeFiles\output.exe"
@@ -80,8 +81,7 @@ def submission(request, problem_id):
                     sol = Solution()
                     sol.user = request.user
                     sol.problem_id = Problem.objects.get(pk=problem_id)
-                    with open(f'OJ/codeFiles/sample.cpp', 'r') as destination:
-                        sol.problem_code = destination.read()
+                    sol.problem_code = user_code
                     sol.submitted_at = timezone.now()
                     sol.Verdict = verdict
                     sol.save()
