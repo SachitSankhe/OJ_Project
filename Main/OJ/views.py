@@ -1,4 +1,3 @@
-from urllib import request
 from django.contrib import messages
 from django.contrib.auth.models import User
 import subprocess
@@ -42,23 +41,36 @@ def submission(request, problem_id):
                     subprocess.run(compile_com, shell=True,
                                        check=True, timeout=3)
                     try:
-                        input = TestCase.objects.get(problem_id=problem_id).input
-                        print(input)
-                        op = subprocess.run(run_com, input=input, capture_output=True, check=True, timeout=1, text=True)
-                        sample_out = TestCase.objects.get(problem_id=problem_id).output
-                        print(sample_out)
-                        print(op.stdout)
-                        
-                        if(op.stdout == sample_out):
-                            print("AC")
+                        testcases = TestCase.objects.all().filter(problem_id=problem_id)
+                        flag = True
+                        for testcase in testcases:
+                            op = subprocess.run(run_com, input=testcase.input, capture_output=True, check=True, timeout=1, text=True)
+                            sample_out = testcase.output
+                            curr_op = op.stdout.strip()
+                            curr_op = ' '.join(curr_op.splitlines())
+                            print(curr_op)
+                            if(curr_op!=sample_out):
+                                flag = False
+                                break
+                        # flag = True
+                        # for i in range(0,len(sample_out)):
+                        #     if curr_op[i] != '\n':
+                        #         if(curr_op[i] != sample_out[i]):
+                        #             flag = False
+                        # for i in range(0,len(sample_out)):
+                        #     print("curr_op: ",curr_op[i]," ", "sample_out: ",sample_out[i])
+                        #     print()
+                        # print(sample_out)
+                        # print(curr_op)
+                        if(flag):
+                            print("Correct Answer")
                             verdict = "AC"
                         else:
-                            print("WA")
-                            verdict = "WA"
-
+                            print("Wrong Answer")
+                            verdict="WA"
                     except subprocess.TimeoutExpired:
                         print("Timeout (TLE)")
-                        verdict = "Timeout (TLE)"
+                        verdict = "TLE"
 
                 except subprocess.CalledProcessError as e:
                     if e.returncode != 0:

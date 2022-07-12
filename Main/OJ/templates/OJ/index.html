@@ -10,25 +10,32 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    <title>Hello, world!</title>
+    <title>Problems</title>
     <style>
         body {
-            background-color: black;
+            background-color: #262626;
         }
-        .container{
-            color: cyan;
+        .links_tag{
+            color: cyan !important;
+            font-size: x-large !important;
         }
     
         .list {
-            color: aquamarine;    
+            color: aquamarine; 
+        }
+        .links {
+            padding: 10px 25px 10px 5px;   
+        }
+        .indexing{
+            padding: 0px;  
         }
     
-        .list li a {
+        .list tbody tr td a {
             text-decoration: none;
             color: aquamarine;
         }
     
-        .list li a:hover {
+        .list tbody tr td a:hover {
             text-decoration: underline;
         }
         
@@ -40,7 +47,7 @@
         {% if user.is_authenticated %}
         <nav class="navbar navbar-light navbar-expand-md bg-dark justify-content-center">
             <div class="container">
-                <a href="#" class="navbar-brand d-flex w-50 me-auto">Hi, {{user.first_name}}</a>
+                <a href="#" class="navbar-brand d-flex w-50 me-auto links_tag">Hi, {{user.first_name}}</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsingNavbar3">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -50,53 +57,62 @@
                             <a class="nav-link links_tag" href="{% url 'oj:index' %}">Problems</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'oj:leaderboard' %}">Submissions</a>
+                            <a class="nav-link links_tag" href="{% url 'oj:leaderboard' %}">Submissions</a>
                         </li>
                     </ul>
                     <ul class="nav navbar-nav ms-auto w-100 justify-content-end">
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'accounts:logout' %}">Logout</a>
+                            <a class="nav-link links_tag" href="{% url 'accounts:logout' %}">Logout</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
         {% else %}
-        <nav class="navbar navbar-expand-lg bg-light">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">Please Login First!!</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-                    aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <nav class="navbar navbar-light navbar-expand-md bg-dark justify-content-center">
+            <div class="container">
+                <a href="#" class="navbar-brand d-flex w-50 me-auto links_tag">Hi, you are not logged in. Please login</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsingNavbar3">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                    <div class="navbar-nav">
-                        <a class="nav-link active" aria-current="page" href="#">Problems</a>
-                        <a class="nav-link" href="#">Register</a>
-                        <a class="nav-link" href="#">Login</a>
-                        <!-- <a class="nav-link disabled">Disabled</a> -->
-                    </div>
+                <div class="navbar-collapse collapse w-100" id="collapsingNavbar3">
+                    <ul class="navbar-nav w-100 justify-content-center">
+                        <li class="nav-item active">
+                            <a class="nav-link links_tag" href="{% url 'oj:index' %}">Problems</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link links_tag" href="{% url 'accounts:registration_page' %}">Register</a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav ms-auto w-100 justify-content-end">
+                        <li class="nav-item">
+                            <a class="nav-link links_tag" href="{% url 'accounts:login' %}">Login</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </nav>
         {% endif %}
     </div>
     <div class="listofproblem" style="display: flex;flex-direction: column; align-items: center;font-size: x-large">
-        <h1 style="color: aliceblue;">
+        <h3 style="color: aliceblue;padding-top: 30px;">
             <u>Problem List!</u>
-        </h1>
+        </h3>
         <br>
         {% if Problem_List %}
-        <ol type="1" class="list">
+        <table class="list">
             {% for problems in Problem_List %}
-            <li>
-            <a href="{% url  'oj:details' problems.problem_id %}">
-                {{problems.problem_name}} {{problems.problem_level}}
-            </a>
-            </li>
-            <br>
+            <tbody>
+                <tr>
+                    <td class="indexing">{{forloop.counter}})</td>
+                    <td class="links"> <a href="{% url  'oj:details' problems.problem_id %}">
+                            {{problems.problem_name}}
+                        </a></td>
+                    <td class="links">{{problems.problem_level}}</td>
+                </tr>
+            </tbody>
             {% endfor %}
-        </ol>
+        </table>
         {% else %}
         <p>No questions are available.</p>
         {% endif %}

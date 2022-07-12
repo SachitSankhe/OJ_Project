@@ -14,7 +14,7 @@ int main() {
   sum = first_number + second_number;
 
   // prints sum 
-  cout << sum <<"\n";
+  cout << sum <<endl;
   t--;
   }   
   return 0;

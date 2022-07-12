@@ -2,7 +2,6 @@ import datetime
 
 from django.db import models
 from django.utils import timezone
-from django.core.validators import FileExtensionValidator
 from django.contrib.auth.models import User
 # Create your models here.
 
@@ -40,11 +39,11 @@ class Problem(models.Model):
 
 class TestCase(models.Model):
     problem_id = models.ForeignKey(Problem, on_delete=models.CASCADE)
-    input = models.CharField('Input', max_length=200)
-    output = models.CharField('Output', max_length=200)
+    input = models.TextField('Input', max_length=2000)
+    output = models.TextField('Output', max_length=2000)
 
     def __str__(self):
-        return self.input
+        return self.problem_id.problem_name
 
 
 class Solution(models.Model):
