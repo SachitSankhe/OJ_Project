@@ -42,27 +42,16 @@ def submission(request, problem_id):
                     subprocess.run(compile_com, shell=True,
                                        check=True, timeout=3)
                     try:
-                        testcases = TestCase.objects.all().filter(problem_id=problem_id)
+                        testcases = TestCase.objects.filter(problem_id=problem_id)
                         flag = True
                         for testcase in testcases:
-                            op = subprocess.run(run_com, input=testcase.input, capture_output=True, check=True, timeout=1, text=True)
+                            op = subprocess.run(run_com, input=testcase.input, capture_output=True, timeout=1, text=True)
                             sample_out = testcase.output
-                            curr_op = op.stdout.strip()
-                            curr_op = ' '.join(curr_op.splitlines())
-                            print(curr_op)
+                            curr_op = ' '.join(op.stdout.strip().splitlines())
                             if(curr_op!=sample_out):
                                 flag = False
                                 break
-                        # flag = True
-                        # for i in range(0,len(sample_out)):
-                        #     if curr_op[i] != '\n':
-                        #         if(curr_op[i] != sample_out[i]):
-                        #             flag = False
-                        # for i in range(0,len(sample_out)):
-                        #     print("curr_op: ",curr_op[i]," ", "sample_out: ",sample_out[i])
-                        #     print()
-                        # print(sample_out)
-                        # print(curr_op)
+                        
                         if(flag):
                             print("Correct Answer")
                             verdict = "AC"
@@ -73,10 +62,9 @@ def submission(request, problem_id):
                         print("Timeout (TLE)")
                         verdict = "TLE"
 
-                except subprocess.CalledProcessError as e:
-                    if e.returncode != 0:
-                        print("Compilation Error")
-                        verdict = "Compilation Error"
+                except subprocess.CalledProcessError:
+                    print("Compilation Error")
+                    verdict = "Compilation Error"
                 finally:
                     sol = Solution()
                     sol.user = request.user
@@ -90,7 +78,6 @@ def submission(request, problem_id):
             else:
                 messages.warning(request, "Wrong File Uploaded")
                 return HttpResponseRedirect(f'/OJ/problems/{problem_id}/')
-
         else:
             messages.error(request, "File not added")
             return HttpResponseRedirect(f'/OJ/problems/{problem_id}/')

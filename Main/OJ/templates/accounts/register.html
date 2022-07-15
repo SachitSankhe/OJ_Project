@@ -39,16 +39,16 @@
 
 <body>
     <div class="container-fluid bg-dark">
-        <h2 style="text-align: center;color: aquamarine; padding: 20px;">
+        <h1 style="text-align: center;color: aquamarine; padding: 3px 20px 20px 20px;font-size: 50px;">
             <u>Registration Form</u>
-        </h2>
+        </h1>
         <div class="mess" style="text-align: center;">
             {% if messages %}
             <ul>
                 {% for message in messages %}
                 <li class="{{message.tags}}" type="none">
                     {% if message.tags != "success" %}
-                    <h4><span style="text-transform: uppercase;">{{message.tags}}</span> : {{message}}</h4>
+                    <h4>{{message}}</h4>
                     {% endif %}
                 </li>
                 {% endfor %}
@@ -88,7 +88,7 @@
                 <input type="submit" class="btn btn-dark btn-outline-success">
             </form>
             <div class="text-center" style="color: aliceblue; text-transform: uppercase;">
-                <p>Already Registered? <a href="{% url 'accounts:login' %}">Login now</a></p>
+                <h5>Already Registered? <a href="{% url 'accounts:login' %}">Login now</a></h5>
             </div>
         </div>
     </div>
