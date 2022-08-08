@@ -45,9 +45,11 @@ def submission(request, problem_id):
                         testcases = TestCase.objects.filter(problem_id=problem_id)
                         flag = True
                         for testcase in testcases:
-                            op = subprocess.run(run_com, input=testcase.input, capture_output=True, timeout=1, text=True)
+                            op = subprocess.run(run_com, input=testcase.input, capture_output=True, timeout=10, text=True)
                             sample_out = testcase.output
                             curr_op = ' '.join(op.stdout.strip().splitlines())
+                            print(curr_op)
+                            print(op)
                             if(curr_op!=sample_out):
                                 flag = False
                                 break
