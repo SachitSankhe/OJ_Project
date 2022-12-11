@@ -41,10 +41,12 @@ def submission(request, problem_id):
                 # print(con_id)
                 try:
                     print("inside try")
+                    # Start docker desktop don't change anything
                     container:Container = client.containers.get(container_id=user.username)
                     if(container.status!='running'):
                         container.start()
                 except Exception as e:
+                    print(e)
                     container = client.containers.run(gcc_image,detach=True,tty=True,name = user.username)
                     # print(con_id)
  
@@ -68,7 +70,7 @@ def submission(request, problem_id):
                             with open(f'OJ/codeFiles/input.txt', '+w') as destination:
                                 destination.write(testcase.input)
                             subprocess.run(['docker','cp','OJ/codeFiles/input.txt',container.id+":input.txt"])
-                            subprocess.run(['docker','exec',container.id,'bash','-c','./a.out < input.txt > output.txt'],timeout=5)
+                            subprocess.run(['docker','exec',container.id,'bash','-c','./a.out < input.txt > output.txt'],timeout=2)
                             subprocess.run(['docker','cp',container.id+':output.txt','OJ/codeFiles/output.txt'],timeout=5)
                             # op = subprocess.run(run_com, input=testcase.input, capture_output=True, timeout=1, text=True)
                             with open(f'OJ/codeFiles/output.txt', 'r') as destination:  
