@@ -20,6 +20,9 @@
             justify-content: center;
             font-size: larger;
         }
+        .container ul a:hover{
+            text-decoration: underline !important;
+        }
 
         .container_t {
             color: aliceblue;
@@ -52,7 +55,7 @@
     <div class="user_info">
         <nav class="navbar navbar-light navbar-expand-md bg-dark justify-content-center">
             <div class="container">
-                <a href="#" class="navbar-brand d-flex w-50 me-auto links_tag">Hi, {{user.first_name}}</a>
+                <a class="navbar-brand d-flex w-50 me-auto links_tag">Hi, {{user.first_name}}</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsingNavbar3">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -79,7 +82,7 @@
         <ul>
             {% for message in messages %}
             <li class="{{message.tags}}" type="none">
-                <h3 style="padding-top: 5px;"><span style="text-transform: uppercase;">{{message.tags}}</span> : {{message}}</h3>
+                <h3 style="padding-top: 5px;">{{message}}</h3>
                 </li>
                 {% endfor %}
                 </ul>
@@ -90,7 +93,7 @@
     </h2>
     <div class="container_t">
         <table>
-            <thead>
+            <thead style="text-align: center;">
                 <tr>
                     <th>UserName</th>
                     <th>Problem Name</th>
@@ -99,7 +102,7 @@
                 </tr>
             </thead>
             {% for solution in sol %}
-            <tbody>
+            <tbody style="text-align: center;">
                 {% if solution.Verdict == "AC" %}
                 <tr style="color: #0DE91A;">
                     <td>{{solution.user.username}}</td>
@@ -115,7 +118,14 @@
                     <td>{{solution.submitted_at}}</td>
                 </tr>
                 {% elif solution.Verdict == "TLE" %}
-                <tr style="color: aqua;">
+                <tr style="color: yellow;">
+                    <td>{{solution.user.username}}</td>
+                    <td>{{solution.problem_id.problem_name}}</td>
+                    <td>{{solution.Verdict}}</td>
+                    <td>{{solution.submitted_at}}</td>
+                </tr>
+                {% elif solution.Verdict == "Compilation Error" %}
+                <tr style="color: #FF7F00;">
                     <td>{{solution.user.username}}</td>
                     <td>{{solution.problem_id.problem_name}}</td>
                     <td>{{solution.Verdict}}</td>

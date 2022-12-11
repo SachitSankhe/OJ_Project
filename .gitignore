@@ -1,2 +1,5 @@
 virtualenvs/
 Main/mysite/settings.py
+Main/OJ/codeFiles/input.txt
+Main/OJ/codeFiles/output.txt
+Main/OJ/codeFiles/sample.cpp

@@ -19,6 +19,9 @@
             color: cyan !important;
             font-size: x-large !important;
         }
+        .container ul a:hover{
+            text-decoration: underline !important;
+        }
     
         .list {
             color: aquamarine; 
@@ -47,7 +50,7 @@
         {% if user.is_authenticated %}
         <nav class="navbar navbar-light navbar-expand-md bg-dark justify-content-center">
             <div class="container">
-                <a href="#" class="navbar-brand d-flex w-50 me-auto links_tag">Hi, {{user.first_name}}</a>
+                <a class="navbar-brand d-flex w-50 me-auto links_tag">Hi, {{user.first_name}}</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsingNavbar3">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -71,7 +74,7 @@
         {% else %}
         <nav class="navbar navbar-light navbar-expand-md bg-dark justify-content-center">
             <div class="container">
-                <a href="#" class="navbar-brand d-flex w-50 me-auto links_tag">Hi, you are not logged in. Please login</a>
+                <a href="#" class="navbar-brand d-flex w-50 me-auto links_tag">OOPS, not logged in. Please login</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsingNavbar3">
                     <span class="navbar-toggler-icon"></span>
                 </button>
