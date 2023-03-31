@@ -42,6 +42,7 @@ def submission(request, problem_id):
                     print("container stopped name is ",container.name)
                 user = request.user
                 client = docker.from_env()
+                print(client)
                 gcc_image = "gcc:latest"
                 # print(con_id)
                 try:
