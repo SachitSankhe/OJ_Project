@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from .models import Problem, Solution, TestCase
+import asyncio
 
 from django.utils import timezone
 # Create your views here.
@@ -35,6 +36,10 @@ def submission(request, problem_id):
         if upload_file != None:
             filename = upload_file.name
             if filename.endswith('.cpp'):
+                async def stopContainer():
+                    container:Container = client.containers.get(container_id=user.username)
+                    container.stop()
+                    print("container stopped name is ",container.name)
                 user = request.user
                 client = docker.from_env()
                 gcc_image = "gcc:latest"
@@ -47,7 +52,7 @@ def submission(request, problem_id):
                         container.start()
                 except Exception as e:
                     print(e)
-                    container = client.containers.run(gcc_image,detach=True,tty=True,name = user.username)
+                    container = client.containers.run(gcc_image,detach=True,tty=True,name = user.username,remove=True)
                     # print(con_id)
  
                 
@@ -64,6 +69,7 @@ def submission(request, problem_id):
                     subprocess.run(['docker','exec',container.id,'bash','-c','g++ a.cpp'],timeout=3)
                     try:
                         testcases = TestCase.objects.filter(problem_id=problem_id)
+                        print("TestCases " ,testcases)
                         flag = True
                         for testcase in testcases:
                             # subprocess.run(['docker','cp',user_code,container.id+":a.cpp"])
@@ -76,19 +82,25 @@ def submission(request, problem_id):
                             with open(f'OJ/codeFiles/output.txt', 'r') as destination:  
                                 op = destination.read()
                             sample_out = testcase.output
-                            print(op)
+                            # print("gene op" ,op)
+                            # print("sample ", sample_out)
                             # curr_op = op.stdout
                             curr_op = ' '.join(op.strip().splitlines())
-                            print(curr_op)
-                            print(op)
+                            sample_out = ' '.join(sample_out.strip().splitlines())
+                            # print(sample_out)
+                            # print(curr_op)
+                            print(curr_op==sample_out)
+                            # print(op)
                             if(curr_op!=sample_out):
                                 flag = False
                                 break
                         
                         if(flag):
+                            # container.stop()
                             print("Correct Answer")
                             verdict = "AC"
                         else:
+                            # asyncio.run(stopContainer()) 
                             print("Wrong Answer")
                             verdict="WA"
                     except subprocess.TimeoutExpired:

@@ -41,19 +41,25 @@ def register(request):
 
             elif (pass1!=pass2):
                 # print("Password not matching")
+                # try:
+                    # validate_password(pass1)
+                messages.error(request,"Password not matching")
+                return HttpResponseRedirect('/accounts/register/')
+                # except ValidationError as v:
+                #     messages.error(request,v)
+                #     return HttpResponseRedirect('/accounts/register/')
+
+            else:
                 try:
                     validate_password(pass1)
-                    messages.error(request,"Password not matching")
-                    return HttpResponseRedirect('/accounts/register/')
+                    user = User.objects.create_user(username=user_name,password=pass1,first_name = first_name,last_name=last_name,email=email)
+                    user.save()
+                    messages.success(request,'User Created Succesfully.Please login')
+                    return HttpResponseRedirect(reverse('accounts:login'))
                 except ValidationError as v:
                     messages.error(request,v)
                     return HttpResponseRedirect('/accounts/register/')
-
-            else:
-                user = User.objects.create_user(username=user_name,password=pass1,first_name = first_name,last_name=last_name,email=email)
-                user.save()
-                messages.success(request,'User Created Succesfully.Please login')
-                return HttpResponseRedirect(reverse('accounts:login'))
+                   
     else:
         return render(request,'accounts/register.html')
 def login(request):
