@@ -39,8 +39,8 @@ class Problem(models.Model):
 
 class TestCase(models.Model):
     problem_id = models.ForeignKey(Problem, on_delete=models.CASCADE)
-    input = models.TextField('Input', max_length=2000)
-    output = models.TextField('Output', max_length=2000)
+    input = models.TextField('Input', max_length=100000)
+    output = models.TextField('Output', max_length=100000)
 
     def __str__(self):
         return self.problem_id.problem_name
