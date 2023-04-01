@@ -97,11 +97,11 @@ def submission(request, problem_id):
                                 break
                         
                         if(flag):
-                            # container.stop()
+                            container.stop()
                             print("Correct Answer")
                             verdict = "AC"
                         else:
-                            # asyncio.run(stopContainer()) 
+                            container.stop()
                             print("Wrong Answer")
                             verdict="WA"
                     except subprocess.TimeoutExpired:
