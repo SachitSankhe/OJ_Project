@@ -97,10 +97,12 @@ def submission(request, problem_id):
                                 break
                         
                         if(flag):
+                            print("Stopping container -> ", container)
                             container.stop()
                             print("Correct Answer")
                             verdict = "AC"
                         else:
+                            print("Stopping container -> ", container)
                             container.stop()
                             print("Wrong Answer")
                             verdict="WA"
