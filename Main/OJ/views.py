@@ -98,17 +98,17 @@ def submission(request, problem_id):
                         
                         if(flag):
                             print("Stopping container -> ", container)
-                            # container.stop()
+                            container.stop()
                             print("Correct Answer")
                             verdict = "AC"
                         else:
                             print("Stopping container -> ", container)
-                            # container.stop()
+                            container.stop()
                             print("Wrong Answer")
                             verdict="WA"
                     except subprocess.TimeoutExpired:
                         container:Container = client.containers.get(container_id=user.username)
-                        # container.stop()
+                        container.stop()
                         print("Timeout (TLE)")
                         verdict = "TLE"
 
