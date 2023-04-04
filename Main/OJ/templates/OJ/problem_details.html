@@ -43,6 +43,17 @@
         .error {
             color: red;
         }
+        .spinner {
+            display: none;
+          }
+          
+          .form {
+            display: block;
+          }
+          
+          .no-display {
+            display: none;
+          }
     </style>
 </head>
 
@@ -85,12 +96,12 @@
                 </ul>
                 {% endif %}
                 </div>
-    <div class="container_p">
+    <div class="container_p" id="form_container">
         <h2>{{problem.problem_name}}</h2>
         <p>{{problem.problem_statement}}</p>
         <p>Difficulty Level : {{problem.problem_level}}</p>
             <br>
-            <form method="post" enctype="multipart/form-data" action="{% url 'oj:submission' problem.problem_id %}"
+            <form id="formDiv" method="post" enctype="multipart/form-data" action="{% url 'oj:submission' problem.problem_id %}"
                 class="container_p">
                 {% csrf_token %}
                 {{ form.as_p }}
@@ -99,8 +110,14 @@
                     <input type="file" name="problem_code" id="problem_code">
                 </span>
                 <br>
-                <input type="submit" class="btn btn-dark btn-outline-success">
-                </form>
+                <input type="submit" onClick="spinner()"class="btn btn-dark btn-outline-success">
+            </form>
+            <div >
+                <div id="spinner-displayer" class="spinner-border text-success no-display" role="status">
+                    <span class="visually-hidden">Submitting and executing...</span>
+                </div>
+            </div>
+                
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
@@ -114,6 +131,20 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
         integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
         crossorigin="anonymous"></script>
+
+        <script>
+            function spinner() {
+              // Get references to the spinner and form elements
+              const spinnerDisplayer = document.getElementById("spinner-displayer");
+              spinnerDisplayer.classList.remove("no-display");
+              const form = document.getElementById("formDiv");
+              form.style.display = "none";
+            }
+            
+            // Attach a click event listener to the button
+            const btn = document.querySelector('.btn');
+            btn.addEventListener('click', spinner);
+          </script>
 </body>
 
 </html>
